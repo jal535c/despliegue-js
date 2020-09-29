@@ -1,3 +1,6 @@
+//en vez de import Player from Player.js, añado Player.js al html
+
+
 class Scene2 extends Phaser.Scene {
   constructor() {
     super("playGame");
@@ -48,13 +51,28 @@ class Scene2 extends Phaser.Scene {
     }
 
     //Player create
-    this.player = this.physics.add.sprite(config.width/2, config.height-60, "player");
-    this.player.play("player_fly");   //activa la animacion
-    
-    //Create cursors control
-    this.cursorKeys = this.input.keyboard.createCursorKeys();   //ahora los cursores tienen los listener
-    
-    this.player.setCollideWorldBounds(true);    //evita que se salga del mundo
+    var configPlayer = {
+      scene: this,
+      posX: config.width/2,
+      posY: config.height-60,
+      texture: "player",
+      color: '0xff0000',    //rojo, puedo usar sin comillas
+      cursors: true       //usa las flechas cursores
+
+    }
+    this.player = new Player(configPlayer);
+
+    //Player2 create
+    var configPlayer2 = {
+      scene: this,
+      posX: config.width/2-50,
+      posY: config.height-60,
+      texture: "player",
+      color: '0x00ff00',    //verde, puedo usar sin comillas
+      cursors: false      //usa las teclas WASD
+
+    }
+    this.player2 = new Player(configPlayer2);
 
     //Create space key for fire
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -71,31 +89,14 @@ class Scene2 extends Phaser.Scene {
     
     this.bgScene2.tilePositionY -= 0.5;   //se retrasa 0.5seg, para parecer efecto scroll paralax
 
-    this.movePlayerManager();
+    this.player.update();
+    this.player2.update();
     
     if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {    //al pulsar el spacebar, pinta fire por consola
       console.log("fire!!");
     }
   }
-
-
-  /**
-   * Manage cursor actions for player
-   */  
-  movePlayerManager() {
-    if (this.cursorKeys.left.isDown) {
-      this.player.setVelocityX(-100);
-    } else if (this.cursorKeys.right.isDown) {
-      this.player.setVelocityX(100);
-    } 
-    
-    if (this.cursorKeys.up.isDown) {      //asi permite diagonales, con else no
-      this.player.setVelocityY(-100);
-    } else if (this.cursorKeys.down.isDown) {
-      this.player.setVelocityY(100);
-    }
-  }
-
+ 
 
   /**
    * Move the ship
