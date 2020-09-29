@@ -11,6 +11,45 @@ class Scene2 extends Phaser.Scene {
     this.ship2 = this.add.sprite(config.width/2, config.height/2, "ship2");
     this.ship3 = this.add.sprite(config.width/2+50, config.height/2, "ship3");
     
+    //Sprite animations
+    this.anims.create({
+      key: "ship1_fly",
+      frames: this.anims.generateFrameNumbers("ship1"),   //le paso el id del sprite
+      frameRate: 20,
+      repeat: -1    //en bucle
+    });
+    this.anims.create({
+      key: "ship2_fly",
+      frames: this.anims.generateFrameNumbers("ship2"),
+      frameRate: 20,
+      repeat: -1    //en bucle
+    });
+    this.anims.create({
+      key: "ship3_fly",
+      frames: this.anims.generateFrameNumbers("ship3"),
+      frameRate: 20,
+      repeat: -1    //en bucle
+    });
+    
+    this.anims.create({
+      key: "explode",
+      frames: this.anims.generateFrameNumbers("explosion"),
+      frameRate: 20,
+      repeat: 0,   //solo se hace una vez
+      hideOnComplete: true
+    });
+
+    //Play anims
+    this.ship1.play("ship1_fly");
+    this.ship2.play("ship2_fly");
+    this.ship3.play("ship3_fly");
+
+    //Make clickables the ships
+    this.ship1.setInteractive();
+    this.ship2.setInteractive();
+    this.ship3.setInteractive();
+
+    this.input.on('gameobjectdown', this.destroyShip, this);    //listener o callback, le paso evento (un gameobjectdown es un click), delegado, contexto
 
     this.add.text(20, 50, 'THE Game!!!', {font:"25px Arial", fill:"yellow"});   //le paso un objeto, propiedad font y color de relleno
     console.log("cargando Scene 2");     //veo el texto por consola de chrome    
@@ -36,7 +75,7 @@ class Scene2 extends Phaser.Scene {
    */
   moveShip(ship, speed) {   //la quiero usar para los 3 ship, por eso le paso la nave 
     //this.ship1...       si solo usara para ship1, no se lo paso, ya lo uso dentro
-    
+
     ship.y += speed;
 
     if (ship.y > config.height+10) {
@@ -53,5 +92,19 @@ class Scene2 extends Phaser.Scene {
     ship.y = 0;
     var randomX = Phaser.Math.Between(0+10, config.width-10);
     ship.x = randomX;
+  }
+
+
+  /**
+   * 
+   * @param {*} pointer no lo usamos todavia
+   * @param {*} gameObject referencia al objeto que ha sido pulsado
+   */
+  destroyShip(pointer, gameObject) {    //gameObject (viene del input on) es una referencia al objeto k le hemos hecho click
+    //console.log("click");
+
+    gameObject.setTexture("explosion");   //cambia la textura
+    gameObject.play("explode");       //ejecuta la animacion
+
   }
 }
