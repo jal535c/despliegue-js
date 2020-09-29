@@ -1,3 +1,7 @@
+var gameSettings = {
+  playerSpeed: 200,
+}
+
 var config = {      //la variable config es accesible desde todos los js
   width: 256,       //mismo tamaño que la imagen de fondo
   height: 272,

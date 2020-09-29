@@ -19,6 +19,8 @@ class Scene1 extends Phaser.Scene {   //hereda de la clase Scene de Phaser
     this.load.spritesheet("explosion", "assets/spritesheets/explosion.png", {frameWidth:16, frameHeight: 16} );
 
     this.load.spritesheet("powerUp", "assets/spritesheets/power-up.png", {frameWidth: 16, frameHeight: 16} );
+
+    this.load.spritesheet("player", "assets/spritesheets/player.png", {frameWidth: 16, frameHeight: 24} );
   }
 
 
@@ -67,6 +69,12 @@ class Scene1 extends Phaser.Scene {   //hereda de la clase Scene de Phaser
       repeat: -1
     });
     
+    this.anims.create({
+      key: "player_fly",
+      frames: this.anims.generateFrameNumbers("player"),    //asi los usa todos
+      frameRate: 20,
+      repeat: -1
+    });
 
     this.scene.start("playGame");   //lanza la otra scena    
   }
