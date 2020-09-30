@@ -6,7 +6,7 @@ var config = {      //la variable config es accesible desde todos los js
   width: 256,       //mismo tamaño que la imagen de fondo
   height: 272,
   backgroundColor: 0x000000,    //en rgb, fondo negro
-  scene: [Scene1, Scene2],    //nombre de los ficheros sin extension, se lanza la primera, despues se llaman unas a otras
+  scene: [BootScene, Level1],    //nombre de los ficheros sin extension, se lanza la primera, despues se llaman unas a otras
   pixelArt: true,     //se definen mejor los pixeles
   physics: {        //motor de fisicas 
     default: "arcade",    //selecciono el motor arcade, es mas sencillo, tambien esta matterjs

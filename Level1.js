@@ -1,9 +1,9 @@
 //en vez de import Player from Player.js, añado Player.js al html
 
 
-class Scene2 extends Phaser.Scene {
+class Level1 extends Phaser.Scene {
   constructor() {
-    super("playGame");
+    super("Level1");
   }
 
 
@@ -56,7 +56,7 @@ class Scene2 extends Phaser.Scene {
       posX: config.width/2,
       posY: config.height-60,
       texture: "player",
-      color: '0xff0000',    //rojo, puedo usar sin comillas
+      color: "0xff0000",    //rojo, puedo usar sin comillas, o comillas simples
       cursors: true       //usa las flechas cursores
 
     }
@@ -68,7 +68,7 @@ class Scene2 extends Phaser.Scene {
       posX: config.width/2-50,
       posY: config.height-60,
       texture: "player",
-      color: '0x00ff00',    //verde, puedo usar sin comillas
+      color: "0x00ff00",    //verde, puedo usar sin comillas, o comillas simples
       cursors: false      //usa las teclas WASD
 
     }
@@ -99,9 +99,9 @@ class Scene2 extends Phaser.Scene {
  
 
   /**
-   * Move the ship
-   * @param {*} ship 
-   * @param {*} speed 
+   * Movement management
+   * @param ship - object to move
+   * @param speed - object speed
    */
   moveShip(ship, speed) {   //la quiero usar para los 3 ship, por eso le paso la nave     
     ship.y += speed;
@@ -114,7 +114,7 @@ class Scene2 extends Phaser.Scene {
 
   /**
    * Reset ship position with random x
-   * @param {*} ship 
+   * @param ship - object to reset position 
    */
   resetShipPos(ship) {
     ship.y = 0;
@@ -125,8 +125,8 @@ class Scene2 extends Phaser.Scene {
 
   /**
    * Destroy the ship clickable
-   * @param {*} pointer no lo usamos todavia
-   * @param {*} gameObject referencia al objeto que ha sido pulsado
+   * @param pointer - no lo usamos todavia
+   * @param gameObject - referencia al objeto que ha sido pulsado
    */
   destroyShip(pointer, gameObject) {    //gameObject (viene del input on) es una referencia al objeto k le hemos hecho click
     gameObject.setTexture("explosion");   //cambia la textura

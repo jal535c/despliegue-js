@@ -1,6 +1,6 @@
-class Scene1 extends Phaser.Scene {   //hereda de la clase Scene de Phaser
+class BootScene extends Phaser.Scene {   //hereda de la clase Scene de Phaser
   constructor() {
-    super("bootGame");    //nombre o key o id de mi scene, para que lo sepa el padre
+    super("BootScene");    //nombre o key o id de mi scene, para que lo sepa el padre
   }
 
 
@@ -76,6 +76,6 @@ class Scene1 extends Phaser.Scene {   //hereda de la clase Scene de Phaser
       repeat: -1
     });
 
-    this.scene.start("playGame");   //lanza la otra scena    
+    this.scene.start("Level1");   //lanza la otra scena    
   }
 }

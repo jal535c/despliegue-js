@@ -1,15 +1,17 @@
 class Player extends Phaser.Physics.Arcade.Sprite {   
   constructor(configPlayer) {   
-    super(configPlayer.scene, configPlayer.posX, configPlayer.posY, configPlayer.texture);    //necesita, la scene, posx, posy, texture, key
+    super(configPlayer.scene, configPlayer.posX, configPlayer.posY, configPlayer.texture);    //necesita: scene, x, y, texture
     
-    //Add the player to the current scene, and enables physics to him
-    configPlayer.scene.add.existing(this);
-    configPlayer.scene.physics.world.enableBody(this);
+    this.scene = configPlayer.scene;    //creo una propiedad para Player, y la vinculo a la scene pasada
+
+    //Add the player to the current scene, and enables physics to him (como this.physics.add.sprite)
+    this.scene.add.existing(this);
+    this.scene.physics.world.enableBody(this);
     
     this.setCollideWorldBounds(true);     //evita que se salga de la pantalla
     this.play("player_fly");   //activa la animacion
 
-    this.setTint(configPlayer.color);   //pinta una capa de color por encima del sprite
+    this.setTint(configPlayer.color);   //pinta una capa de color semitransparente por encima del sprite
     
     if (configPlayer.cursors) {
       this.playerKeys = configPlayer.scene.input.keyboard.createCursorKeys();   //crea atributo para teclas de jugador
