@@ -22,12 +22,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         down: Phaser.Input.Keyboard.KeyCodes.S,
         right: Phaser.Input.Keyboard.KeyCodes.D
       });
-    }    
+    }
+    
+    this.shootKey = this.scene.input.keyboard.addKey(configPlayer.shootKey);
   }
 
 
   update() {      //llamado desde el update de la scene2
     this.movePlayerManager();
+
+    if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {    //al pulsar shoot key, pinta fire por consola
+      console.log("fire!!");
+    }
   }
 
 

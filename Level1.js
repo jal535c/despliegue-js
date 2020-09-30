@@ -57,8 +57,8 @@ class Level1 extends Phaser.Scene {
       posY: config.height-60,
       texture: "player",
       color: "0xff0000",    //rojo, puedo usar sin comillas, o comillas simples
-      cursors: true       //usa las flechas cursores
-
+      cursors: true,       //usa las flechas cursores
+      shootKey: Phaser.Input.Keyboard.KeyCodes.K
     }
     this.player = new Player(configPlayer);
 
@@ -69,13 +69,13 @@ class Level1 extends Phaser.Scene {
       posY: config.height-60,
       texture: "player",
       color: "0x00ff00",    //verde, puedo usar sin comillas, o comillas simples
-      cursors: false      //usa las teclas WASD
-
+      cursors: false,      //usa las teclas WASD
+      shootKey: Phaser.Input.Keyboard.KeyCodes.F
     }
     this.player2 = new Player(configPlayer2);
 
     //Create space key for fire
-    this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    //this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   }
 
 
@@ -90,11 +90,7 @@ class Level1 extends Phaser.Scene {
     this.bgScene2.tilePositionY -= 0.5;   //se retrasa 0.5seg, para parecer efecto scroll paralax
 
     this.player.update();
-    this.player2.update();
-    
-    if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {    //al pulsar el spacebar, pinta fire por consola
-      console.log("fire!!");
-    }
+    this.player2.update();    
   }
  
 
