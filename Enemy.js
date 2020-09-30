@@ -1,20 +1,27 @@
-
-
-class Enemy extends Phaser.GameObjects.Sprite {
+class Enemy extends Phaser.Physics.Arcade.Sprite {
   constructor(cfg) {
+    super(cfg.scene, cfg.posX, cfg.posY, cfg.texture);
 
-    super(cfg.scene, cfg.x, cfg.y, cfg.texture);
+    this.scene = cfg.scene;
+    this.x = cfg.posX;
+    this.y = cfg.posY;
+    this.speed = cfg.speed;
+    
+    this.scene.add.existing(this);
+    this.scene.physics.world.enableBody(this);
 
-    cfg.scene.add.existing(this);
+    this.play(cfg.anim);      
 
-    this.play(cfg.anim);
+    //Make clickables the ships
+    this.setInteractive();
+    this.setInteractive();
+    this.setInteractive();
+    this.scene.input.on('gameobjectdown', this.destroyShip, this.scene);    //listener o callback, le paso evento (un gameobjectdown es un click), delegado, contexto
   }
 
 
   update() {
-    this.moveShip(this.ship1, 1);
-    this.moveShip(this.ship2, 2);
-    this.moveShip(this.ship3, 3);
+    this.moveShip(this.speed);
   }
 
 
@@ -23,11 +30,11 @@ class Enemy extends Phaser.GameObjects.Sprite {
    * @param ship - object to move
    * @param speed - object speed
    */
-  moveShip(ship, speed) {   //la quiero usar para los 3 ship, por eso le paso la nave     
-    ship.y += speed;
-
-    if (ship.y > config.height+10) {
-      this.resetShipPos(ship);
+  moveShip(speed) {  
+    this.y += speed;
+    
+    if (this.y > config.height+10) {
+      this.resetShipPos();
     }
   }
 
@@ -36,9 +43,20 @@ class Enemy extends Phaser.GameObjects.Sprite {
    * Reset ship position with random x
    * @param ship - object to reset position 
    */
-  resetShipPos(ship) {
-    ship.y = 0;
+  resetShipPos() {
+    this.y = 0;
     var randomX = Phaser.Math.Between(0+10, config.width-10);
-    ship.x = randomX;
+    this.x = randomX;
+  }
+
+
+  /**
+   * Destroy the ship clickable
+   * @param pointer - no lo usamos todavia
+   * @param gameObject - referencia al objeto que ha sido pulsado
+   */
+  destroyShip(pointer, gameObject) {    //gameObject (viene del input on) es una referencia al objeto k le hemos hecho click
+    gameObject.setTexture("explosion");   //cambia la textura
+    gameObject.play("explode");       //ejecuta la animacion
   }
 }

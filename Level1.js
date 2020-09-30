@@ -9,22 +9,14 @@ class Level1 extends Phaser.Scene {
 
   create() {
     this.bgScene2 = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0,0);
-    
-    //this.ship1 = this.add.sprite(config.width/2-50, config.height/2, "ship1");
-    //this.ship2 = this.add.sprite(config.width/2, config.height/2, "ship2");
-    //this.ship3 = this.add.sprite(config.width/2+50, config.height/2, "ship3");
         
-    //Play anims
-    //this.ship1.play("ship1_fly");
-    //this.ship2.play("ship2_fly");
-    //this.ship3.play("ship3_fly");
-
     var configEnemy1 = {
       scene: this,
       posX: config.width/2-50,
       posY: config.height/2,
       texture: "ship1",
-      anim: "ship1_fly"      
+      anim: "ship1_fly",
+      speed: 1  
     }
     this.ship1 = new Enemy(configEnemy1);
     
@@ -33,7 +25,8 @@ class Level1 extends Phaser.Scene {
       posX: config.width/2,
       posY: config.height/2,
       texture: "ship2",
-      anim: "ship2_fly"      
+      anim: "ship2_fly",
+      speed: 2
     }
     this.ship2 = new Enemy(configEnemy2);
 
@@ -42,17 +35,12 @@ class Level1 extends Phaser.Scene {
       posX: config.width/2+50,
       posY: config.height/2,
       texture: "ship3",
-      anim: "ship3_fly"      
+      anim: "ship3_fly",
+      speed: 3
     }
     this.ship3 = new Enemy(configEnemy3);
 
-
-    //Make clickables the ships
-    this.ship1.setInteractive();
-    this.ship2.setInteractive();
-    this.ship3.setInteractive();
-    this.input.on('gameobjectdown', this.destroyShip, this);    //listener o callback, le paso evento (un gameobjectdown es un click), delegado, contexto
-
+    
     this.add.text(20, 50, 'THE Game!!!', {font:"25px Arial", fill:"yellow"});   //le paso un objeto, propiedad font y color de relleno
     console.log("cargando Scene 2");     //veo el texto por consola de chrome    
 
@@ -100,18 +88,14 @@ class Level1 extends Phaser.Scene {
       cursors: false,      //usa las teclas WASD
       shootKey: Phaser.Input.Keyboard.KeyCodes.F
     }
-    this.player2 = new Player(configPlayer2);
-
-    //Create space key for fire
-    //this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.player2 = new Player(configPlayer2);    
   }
 
 
   /**
    * Update 60 times per secons (jsdoc para que muestre informacion de mis metodos)
    */
-  update() {
-    
+  update() {    
     this.ship1.update();
     this.ship2.update();
     this.ship3.update();
@@ -120,19 +104,5 @@ class Level1 extends Phaser.Scene {
 
     this.player.update();
     this.player2.update();    
-  }
- 
-
-  
-
-
-  /**
-   * Destroy the ship clickable
-   * @param pointer - no lo usamos todavia
-   * @param gameObject - referencia al objeto que ha sido pulsado
-   */
-  destroyShip(pointer, gameObject) {    //gameObject (viene del input on) es una referencia al objeto k le hemos hecho click
-    gameObject.setTexture("explosion");   //cambia la textura
-    gameObject.play("explode");       //ejecuta la animacion
-  }
+  }  
 }
