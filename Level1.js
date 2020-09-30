@@ -10,14 +10,42 @@ class Level1 extends Phaser.Scene {
   create() {
     this.bgScene2 = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0,0);
     
-    this.ship1 = this.add.sprite(config.width/2-50, config.height/2, "ship1");
-    this.ship2 = this.add.sprite(config.width/2, config.height/2, "ship2");
-    this.ship3 = this.add.sprite(config.width/2+50, config.height/2, "ship3");
+    //this.ship1 = this.add.sprite(config.width/2-50, config.height/2, "ship1");
+    //this.ship2 = this.add.sprite(config.width/2, config.height/2, "ship2");
+    //this.ship3 = this.add.sprite(config.width/2+50, config.height/2, "ship3");
         
     //Play anims
-    this.ship1.play("ship1_fly");
-    this.ship2.play("ship2_fly");
-    this.ship3.play("ship3_fly");
+    //this.ship1.play("ship1_fly");
+    //this.ship2.play("ship2_fly");
+    //this.ship3.play("ship3_fly");
+
+    var configEnemy1 = {
+      scene: this,
+      posX: config.width/2-50,
+      posY: config.height/2,
+      texture: "ship1",
+      anim: "ship1_fly"      
+    }
+    this.ship1 = new Enemy(configEnemy1);
+    
+    var configEnemy2 = {
+      scene: this,
+      posX: config.width/2,
+      posY: config.height/2,
+      texture: "ship2",
+      anim: "ship2_fly"      
+    }
+    this.ship2 = new Enemy(configEnemy2);
+
+    var configEnemy3 = {
+      scene: this,
+      posX: config.width/2+50,
+      posY: config.height/2,
+      texture: "ship3",
+      anim: "ship3_fly"      
+    }
+    this.ship3 = new Enemy(configEnemy3);
+
 
     //Make clickables the ships
     this.ship1.setInteractive();
@@ -83,9 +111,10 @@ class Level1 extends Phaser.Scene {
    * Update 60 times per secons (jsdoc para que muestre informacion de mis metodos)
    */
   update() {
-    this.moveShip(this.ship1, 1);
-    this.moveShip(this.ship2, 2);
-    this.moveShip(this.ship3, 3);
+    
+    this.ship1.update();
+    this.ship2.update();
+    this.ship3.update();
     
     this.bgScene2.tilePositionY -= 0.5;   //se retrasa 0.5seg, para parecer efecto scroll paralax
 
@@ -94,29 +123,7 @@ class Level1 extends Phaser.Scene {
   }
  
 
-  /**
-   * Movement management
-   * @param ship - object to move
-   * @param speed - object speed
-   */
-  moveShip(ship, speed) {   //la quiero usar para los 3 ship, por eso le paso la nave     
-    ship.y += speed;
-
-    if (ship.y > config.height+10) {
-      this.resetShipPos(ship);
-    }
-  }
-
-
-  /**
-   * Reset ship position with random x
-   * @param ship - object to reset position 
-   */
-  resetShipPos(ship) {
-    ship.y = 0;
-    var randomX = Phaser.Math.Between(0+10, config.width-10);
-    ship.x = randomX;
-  }
+  
 
 
   /**
