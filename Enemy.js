@@ -1,27 +1,26 @@
-class Enemy extends Phaser.Physics.Arcade.Sprite {
-  constructor(cfg) {
-    super(cfg.scene, cfg.posX, cfg.posY, cfg.texture);
+class Enemy extends Phaser.GameObjects.Sprite {
+//class Enemy extends Phaser.Physics.Arcade.Sprite {
+  constructor(configEnemy) {
+    super(configEnemy.scene, configEnemy.posX, configEnemy.posY, configEnemy.texture);
 
-    this.scene = cfg.scene;
-    this.x = cfg.posX;
-    this.y = cfg.posY;
-    this.speed = cfg.speed;
+    this.scene = configEnemy.scene;
+    //this.x = configEnemy.posX;    //no es necasario, Sprite ya tiene x e y
+    //this.y = configEnemy.posY;
+    this.speed = configEnemy.speed;
     
-    this.scene.add.existing(this);
-    this.scene.physics.world.enableBody(this);
+    this.scene.add.existing(this);    //add the enemy to the current scene 
+    //this.scene.physics.world.enableBody(this);    //with physics
 
-    this.play(cfg.anim);      
+    this.play(configEnemy.anim);      //play the animation for the enemy
 
-    //Make clickables the ships
-    this.setInteractive();
-    this.setInteractive();
+    //Make clickable the sprite (the enemy ship)
     this.setInteractive();
     this.scene.input.on('gameobjectdown', this.destroyShip, this.scene);    //listener o callback, le paso evento (un gameobjectdown es un click), delegado, contexto
   }
 
 
   update() {
-    this.moveShip(this.speed);
+    this.moveShip();
   }
 
 
@@ -30,8 +29,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
    * @param ship - object to move
    * @param speed - object speed
    */
-  moveShip(speed) {  
-    this.y += speed;
+  moveShip() {  
+    this.y += this.speed;
     
     if (this.y > config.height+10) {
       this.resetShipPos();
@@ -51,12 +50,12 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
 
   /**
-   * Destroy the ship clickable
+   * Destroy the ship clickable. Is a callback function, gameObject will be this
    * @param pointer - no lo usamos todavia
    * @param gameObject - referencia al objeto que ha sido pulsado
    */
   destroyShip(pointer, gameObject) {    //gameObject (viene del input on) es una referencia al objeto k le hemos hecho click
     gameObject.setTexture("explosion");   //cambia la textura
-    gameObject.play("explode");       //ejecuta la animacion
+    gameObject.play("explode");         //ejecuta la animacion
   }
 }

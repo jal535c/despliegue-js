@@ -4,12 +4,12 @@ class BootScene extends Phaser.Scene {   //hereda de la clase Scene de Phaser
   }
 
 
-  init() {    //para inicializar variables
+  init() {    //flujo de funciones: 4 metodos en escenas, esta primera para inicializar variables
 
   }
 
 
-  preload() {     //lo que cargue lo tengo disponible para todas las scenas
+  preload() {     //para cargar recursos, los tengo disponible para todas las scenas
     this.load.image("background", "assets/images/background.png");   
     
     this.load.spritesheet("ship1", "assets/spritesheets/ship.png", {frameWidth:16, frameHeight: 16} );  //id, url, tamaño sprite
@@ -24,12 +24,12 @@ class BootScene extends Phaser.Scene {   //hereda de la clase Scene de Phaser
   }
 
 
-  create() {
+  create() {    //añade elementos a la escena
     this.add.text(20, 20, 'Loading game...');     //parametros: coordenadas, texto
     console.log("cargando Scene 1");     //veo el texto por consola de chrome    
    
     //Sprite animations
-    this.anims.create({
+    this.anims.create({   //para usar animaciones necesito spritesheet
       key: "ship1_fly",
       frames: this.anims.generateFrameNumbers("ship1"),   //le paso el id del sprite
       frameRate: 20,
@@ -53,7 +53,7 @@ class BootScene extends Phaser.Scene {   //hereda de la clase Scene de Phaser
       frames: this.anims.generateFrameNumbers("explosion"),
       frameRate: 20,
       repeat: 0,   //solo se hace una vez
-      hideOnComplete: true
+      hideOnComplete: true    //desaparece al completarse
     });
 
     this.anims.create({
@@ -76,6 +76,6 @@ class BootScene extends Phaser.Scene {   //hereda de la clase Scene de Phaser
       repeat: -1
     });
 
-    this.scene.start("Level1");   //lanza la otra scena    
+    this.scene.start("Level1");   //lanza otra scena    
   }
 }

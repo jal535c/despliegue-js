@@ -8,7 +8,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this);
     this.scene.physics.world.enableBody(this);
     
-    this.setCollideWorldBounds(true);     //evita que se salga de la pantalla
+    this.setCollideWorldBounds(true);     //evita que se salga de la pantalla (choca con la pared)
     this.play("player_fly");   //activa la animacion
 
     this.setTint(configPlayer.color);   //pinta una capa de color semitransparente por encima del sprite
@@ -24,14 +24,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       });
     }
     
-    this.shootKey = this.scene.input.keyboard.addKey(configPlayer.shootKey);
+    this.shootKey = this.scene.input.keyboard.addKey(configPlayer.shootKey);  //crea tecla, desde la scene la añado y le digo cual
   }
 
 
   update() {      //llamado desde el update de la scene2
     this.movePlayerManager();
 
-    if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {    //al pulsar shoot key, pinta fire por consola
+    if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {    //al pulsar mi shoot key, pinta fire por consola
       console.log("fire!!");
     }
   }
@@ -39,7 +39,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   movePlayerManager() {
     this.body.setVelocity(0);     //si no pulso tecla, permanece quieto
-
+    //this.setVelocity(0);      //sin body tambien funciona
     if (this.playerKeys.left.isDown) {
       this.body.setVelocityX(-gameSettings.playerSpeed);
     } else if (this.playerKeys.right.isDown) {

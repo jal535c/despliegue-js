@@ -8,7 +8,7 @@ class Level1 extends Phaser.Scene {
 
 
   create() {
-    this.bgScene2 = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0,0);
+    this.bgScene2 = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0,0);   //añado el fondo como tilemap, en vez de imagen, para scroll
         
     var configEnemy1 = {
       scene: this,
@@ -47,10 +47,10 @@ class Level1 extends Phaser.Scene {
     //Create group for powerup object
     this.powerUps = this.physics.add.group();   //creo un grupo o coleccion para los powerups, que tendran fisicas
 
-    //Create 6 objects and add to the group
-    var maxObjects = 5;
-    for (var i=0; i<=maxObjects; i++) {
-      var powerUp = this.physics.add.sprite(16, 16, "powerUp");
+    //Create 4 objects and add to the group
+    var maxObjects = 4;
+    for (var i=0; i<maxObjects; i++) {
+      var powerUp = this.physics.add.sprite(16, 16, "powerUp");   //fisicas: gravedad, velocidad, colisiones
       this.powerUps.add(powerUp);             //añado el sprite con fisicas a la coleccion, va por referencia
       powerUp.setRandomPosition(0, 0, config.width, config.height);
 
@@ -61,9 +61,9 @@ class Level1 extends Phaser.Scene {
         powerUp.play("gray");
       }        
       
-      powerUp.setVelocity(100, 100);    //establece la velocidad, la bola se sale de la pantalla
+      powerUp.setVelocity(100, 100);    //establece velocidad a nuestro objeto fisico, ahora se sale de la pantalla
       powerUp.setCollideWorldBounds(true);    //choca con la pared, y se queda pegada
-      powerUp.setBounce(1);           //la bola rebota a su velocidad
+      powerUp.setBounce(1);           //la bola rebota a su velocidad, con 0.5 mas lento, con 1.5 mas rapido
     }
 
     //Player create
@@ -100,7 +100,7 @@ class Level1 extends Phaser.Scene {
     this.ship2.update();
     this.ship3.update();
     
-    this.bgScene2.tilePositionY -= 0.5;   //se retrasa 0.5seg, para parecer efecto scroll paralax
+    this.bgScene2.tilePositionY -= 0.5;   //el fondo se retrasa 0.5seg en el eje y, para parecer efecto scroll paralax
 
     this.player.update();
     this.player2.update();    
