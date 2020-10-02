@@ -9,7 +9,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
     this.speed = configEnemy.speed;
     
     this.scene.add.existing(this);    //add the enemy to the current scene 
-    //this.scene.physics.world.enableBody(this);    //with physics
+    this.scene.physics.world.enableBody(this);    //with physics
 
     this.play(configEnemy.anim);      //play the animation for the enemy
 
@@ -51,8 +51,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
   /**
    * Destroy the ship clickable. Is a callback function, gameObject will be this
-   * @param pointer - no lo usamos todavia
-   * @param gameObject - referencia al objeto que ha sido pulsado
+   * @param pointer - mouse positions, no lo usamos todavia
+   * @param gameObject - reference to the ship object, referencia al objeto que ha sido pulsado
    */
   destroyShip(pointer, gameObject) {    //gameObject (viene del input on) es una referencia al objeto k le hemos hecho click
     gameObject.setTexture("explosion");   //cambia la textura

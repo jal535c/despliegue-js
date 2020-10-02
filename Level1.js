@@ -74,7 +74,8 @@ class Level1 extends Phaser.Scene {
       texture: "player",
       color: "0xff0000",    //rojo, puedo usar sin comillas, o comillas simples
       cursors: true,       //usa las flechas cursores
-      shootKey: Phaser.Input.Keyboard.KeyCodes.K
+      shootKey: Phaser.Input.Keyboard.KeyCodes.K,
+      numberBeams: 5
     }
     this.player = new Player(configPlayer);
 
@@ -86,10 +87,15 @@ class Level1 extends Phaser.Scene {
       texture: "player",
       color: "0x00ff00",    //verde, puedo usar sin comillas, o comillas simples
       cursors: false,      //usa las teclas WASD
-      shootKey: Phaser.Input.Keyboard.KeyCodes.F
+      shootKey: Phaser.Input.Keyboard.KeyCodes.F,
+      numberBeams: 5
     }
-    this.player2 = new Player(configPlayer2);    
-  }
+    this.player2 = new Player(configPlayer2);
+
+    // a group for all the projectiles
+    this.projectiles = this.add.group();
+
+  }//create
 
 
   /**
@@ -103,6 +109,18 @@ class Level1 extends Phaser.Scene {
     this.bgScene2.tilePositionY -= 0.5;   //el fondo se retrasa 0.5seg en el eje y, para parecer efecto scroll paralax
 
     this.player.update();
-    this.player2.update();    
+    this.player2.update();
+
+    //update all the beams
+    /*
+    for (var i=0; this.scene.projectiles.getChildren.length; i++) {
+      var beam = this.projectiles.getChildren[i];
+      beam.update();
+    }*/
+
+    var beams = this.projectiles.getChildren();
+    beams.forEach((beam) => {
+      beam.update();
+    })
   }  
 }

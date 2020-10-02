@@ -33,6 +33,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {    //al pulsar mi shoot key, pinta fire por consola
       console.log("fire!!");
+
+      var beam = new Beam({
+        scene: this.scene,
+        posX: this.x,
+        posY: this.y-16,
+        texture: "beam"
+      });
     }
   }
 

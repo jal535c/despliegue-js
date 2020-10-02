@@ -21,6 +21,8 @@ class BootScene extends Phaser.Scene {   //hereda de la clase Scene de Phaser
     this.load.spritesheet("powerUp", "assets/spritesheets/power-up.png", {frameWidth: 16, frameHeight: 16} );
 
     this.load.spritesheet("player", "assets/spritesheets/player.png", {frameWidth: 16, frameHeight: 24} );
+
+    this.load.spritesheet("beam", "assets/spritesheets/beam.png", {frameWidth: 16, frameHeight: 16} );
   }
 
 
@@ -72,6 +74,13 @@ class BootScene extends Phaser.Scene {   //hereda de la clase Scene de Phaser
     this.anims.create({
       key: "player_fly",
       frames: this.anims.generateFrameNumbers("player"),    //asi los usa todos
+      frameRate: 20,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: "beam_shoot",
+      frames: this.anims.generateFrameNumbers("beam"),
       frameRate: 20,
       repeat: -1
     });
