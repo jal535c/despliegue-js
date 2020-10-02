@@ -25,13 +25,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
     
     this.shootKey = this.scene.input.keyboard.addKey(configPlayer.shootKey);  //crea tecla, desde la scene la añado y le digo cual
+
+    this.numberBeam = configPlayer.numberBeam;
   }
 
 
   update() {      //llamado desde el update de la scene2
     this.movePlayerManager();
 
-    if (Phaser.Input.Keyboard.JustDown(this.shootKey)) {    //al pulsar mi shoot key, pinta fire por consola
+    if (Phaser.Input.Keyboard.JustDown(this.shootKey) && this.numberBeam>0) {    //al pulsar mi shoot key, pinta fire por consola
       console.log("fire!!");
 
       var beam = new Beam({
@@ -40,6 +42,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         posY: this.y-16,
         texture: "beam"
       });
+
+      this.numberBeam--;
+
+      
     }
   }
 

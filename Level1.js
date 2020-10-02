@@ -75,7 +75,7 @@ class Level1 extends Phaser.Scene {
       color: "0xff0000",    //rojo, puedo usar sin comillas, o comillas simples
       cursors: true,       //usa las flechas cursores
       shootKey: Phaser.Input.Keyboard.KeyCodes.K,
-      numberBeams: 5
+      numberBeam: 5
     }
     this.player = new Player(configPlayer);
 
@@ -88,12 +88,18 @@ class Level1 extends Phaser.Scene {
       color: "0x00ff00",    //verde, puedo usar sin comillas, o comillas simples
       cursors: false,      //usa las teclas WASD
       shootKey: Phaser.Input.Keyboard.KeyCodes.F,
-      numberBeams: 5
+      numberBeam: 5
     }
     this.player2 = new Player(configPlayer2);
 
     // a group for all the projectiles
     this.projectiles = this.add.group();
+
+    var txtbalas1 = String(configPlayer.numberBeam);
+    var txtbalas2 = String(configPlayer2.numberBeam);
+    this.txt1 = this.add.text(10, 0, txtbalas2 , {font:"25px Arial", fill:"yellow"});
+    this.txt2 = this.add.text(230, 0, txtbalas1, {font:"25px Arial", fill:"yellow"});
+
 
   }//create
 
@@ -122,5 +128,12 @@ class Level1 extends Phaser.Scene {
     beams.forEach((beam) => {
       beam.update();
     })
+
+    
+    var txtbalas1 = String(this.player.numberBeam);
+    var txtbalas2 = String(this.player2.numberBeam);
+    this.txt1.setText(txtbalas1);
+    this.txt2.setText(txtbalas2);
+    
   }  
 }
