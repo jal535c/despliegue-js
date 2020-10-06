@@ -1,20 +1,24 @@
 class Player extends Phaser.Physics.Arcade.Sprite {   
+  /**
+   * Player manager
+   * @param - configPlayer 
+   */
   constructor(configPlayer) {   
-    super(configPlayer.scene, configPlayer.posX, configPlayer.posY, configPlayer.texture);    //necesita: scene, x, y, texture
+    super(configPlayer.scene, configPlayer.posX, configPlayer.posY, configPlayer.texture);
     
-    this.scene = configPlayer.scene;    //creo una propiedad para Player, y la vinculo a la scene pasada
+    this.scene = configPlayer.scene;
 
-    //Add the player to the current scene, and enables physics to him (como this.physics.add.sprite)
+    //Add the player to the current scene, and enables physics
     this.scene.add.existing(this);
     this.scene.physics.world.enableBody(this);
     
-    this.setCollideWorldBounds(true);     //evita que se salga de la pantalla (choca con la pared)
-    this.play("player_fly");   //activa la animacion
+    this.setCollideWorldBounds(true);     //Set limits of the world
+    this.play("player_fly");  
 
-    this.setTint(configPlayer.color);   //pinta una capa de color semitransparente por encima del sprite
+    this.setTint(configPlayer.color);   //paint semi-transparent color on top of sprite
     
     if (configPlayer.cursors) {
-      this.playerKeys = configPlayer.scene.input.keyboard.createCursorKeys();   //crea atributo para teclas de jugador
+      this.playerKeys = configPlayer.scene.input.keyboard.createCursorKeys();
     } else {
       this.playerKeys = configPlayer.scene.input.keyboard.addKeys({   
         up: Phaser.Input.Keyboard.KeyCodes.W,       
@@ -24,42 +28,51 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       });
     }
     
-    this.shootKey = this.scene.input.keyboard.addKey(configPlayer.shootKey);  //crea tecla, desde la scene la añado y le digo cual
+    this.shootKey = this.scene.input.keyboard.addKey(configPlayer.shootKey);  
+    this.numberBeam=configPlayer.numberBeam;
+    //this.beamMax = configPlayer.beamMax;
 
-    this.numberBeam = configPlayer.numberBeam;
+    //let posX = (configPlayer.playerNumber == 1) ? 10 : 230;
+    //this.beamTxt = this.scene.add.text(posX, 0, this.beamMax, {font:"25px Arial", fill:"yellow"}).setDepth(2);
   }
 
 
-  update() {      //llamado desde el update de la scene2
+  /**
+   * Update player, called by the Level1 update
+   */
+  update() {   
     this.movePlayerManager();
 
-    if (Phaser.Input.Keyboard.JustDown(this.shootKey) && this.numberBeam>0) {    //al pulsar mi shoot key, pinta fire por consola
-      console.log("fire!!");
+    if (Phaser.Input.Keyboard.JustDown(this.shootKey) && this.numberBeam>0) {
+      //console.log("fire!!");
 
       var beam = new Beam({
         scene: this.scene,
         posX: this.x,
-        posY: this.y-16,
+        posY: this.y - 16,      //beam start in front of the head
         texture: "beam"
       });
 
       this.numberBeam--;
-
-      
+      //this.beamMax--;
+      //this.beamTxt.text = this.beamMax;      
     }
   }
 
 
+  /**
+   * Manager to move player
+   */
   movePlayerManager() {
-    this.body.setVelocity(0);     //si no pulso tecla, permanece quieto
-    //this.setVelocity(0);      //sin body tambien funciona
+    this.body.setVelocity(0);     //stop if don't press key
+    
     if (this.playerKeys.left.isDown) {
       this.body.setVelocityX(-gameSettings.playerSpeed);
     } else if (this.playerKeys.right.isDown) {
       this.body.setVelocityX(gameSettings.playerSpeed);
     } 
     
-    if (this.playerKeys.up.isDown) {      //asi permite diagonales, con else no
+    if (this.playerKeys.up.isDown) {      
       this.body.setVelocityY(-gameSettings.playerSpeed);
     } else if (this.playerKeys.down.isDown) {
       this.body.setVelocityY(gameSettings.playerSpeed);
