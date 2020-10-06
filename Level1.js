@@ -5,8 +5,12 @@ class Level1 extends Phaser.Scene {
 
 
   create() {
+    //TileSprite background
     this.bgScene2 = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0,0);
         
+    //create physics group for collisions enemies
+    this.enemies = this.physics.add.group();
+
     //Create the enemies
     var configEnemy1 = {
       scene: this,
@@ -48,19 +52,13 @@ class Level1 extends Phaser.Scene {
     //Create 4 objects and add to the group
     var maxObjects = 4;
     for (var i=0; i<maxObjects; i++) {
-      var powerUp = this.physics.add.sprite(16, 16, "powerUp");
-      this.powerUps.add(powerUp);             //add by reference
-      powerUp.setRandomPosition(0, 0, config.width, config.height);
+      var anim = (i%2 == 0) ? "red" : "gray";
       
-      if (i%2 == 0) {       //is better than (Math.random() > 0.5)
-        powerUp.play("red");    
-      } else {
-        powerUp.play("gray");
-      }        
-      
-      powerUp.setVelocity(100, 100);        //Now goes out the screen
-      powerUp.setCollideWorldBounds(true);  //Now sticky wall
-      powerUp.setBounce(1);                 //Now bounce with the same velocity
+      var powerUp = new PowerUp({
+        scene: this, 
+        texture: "powerUp",
+        anim: anim,        
+      });      
     }
 
     //Player create
@@ -93,7 +91,49 @@ class Level1 extends Phaser.Scene {
 
     // A group for all the projectiles
     this.projectiles = this.add.group();
+
+    //Collisions
+    //this.physics.add.collider(this.player, this.powerUps);
+    //this.physics.add.collider(this.powerUps, this.powerUps);
+
+    this.physics.add.overlap(this.player, this.powerUps, this.pickPowerUp, null, this);
+    this.physics.add.overlap(this.player2, this.powerUps, this.pickPowerUp, null, this);
+    
+    this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this);
+    this.physics.add.overlap(this.player2, this.enemies, this.hurtPlayer, null, this);
   }//create
+
+
+  /**
+   * Collision between player and enemy
+   * @param - player 
+   * @param - enemy 
+   */
+  hurtPlayer(player, enemy) {
+    enemy.resetShipPos();
+    player.x = config.width / 2;
+    player.y = config.height - 60;
+
+    player.lives--;
+  }
+
+
+  /**
+   * Collision between player and powerUp
+   * @param - player 
+   * @param - powerUp
+   */
+  pickPowerUp(player, powerUp) {
+    //console.log(powerUp.extraLife);
+
+    if (powerUp.extraLife) player.lives++;
+    if (powerUp.extraBeam) {
+      player.beamMax += 10;
+      player.beamTxt.text = player.beamMax;   //update beam text
+    }
+    
+    powerUp.destroy();
+  }
 
 
   /**

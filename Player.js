@@ -31,6 +31,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.shootKey = this.scene.input.keyboard.addKey(configPlayer.shootKey);  
     
     this.beamMax = configPlayer.beamMax;
+    this.lives = 3;
 
     //paint the beams numbers
     let posX = (configPlayer.playerNumber == 1) ? 10 : 220;
