@@ -72,8 +72,8 @@ class Level1 extends Phaser.Scene {
       color: "0xff0000",    //red, also valid without double quotes
       cursors: true,       //use the cursor keys
       shootKey: Phaser.Input.Keyboard.KeyCodes.K,
-      numberBeam: 20,
-      //playerNumber: 1,
+      beamMax: 20,
+      playerNumber: 2
     }
     this.player = new Player(configPlayer);
 
@@ -86,18 +86,13 @@ class Level1 extends Phaser.Scene {
       color: "0x00ff00",    //green
       cursors: false,      //use the WASD keys
       shootKey: Phaser.Input.Keyboard.KeyCodes.F,
-      numberBeam: 20,
-      //playerNumber: 2,
+      beamMax: 20,
+      playerNumber: 1
     }
     this.player2 = new Player(configPlayer2);
 
     // A group for all the projectiles
     this.projectiles = this.add.group();
-
-    var txtbalas1 = String(configPlayer.numberBeam);
-    var txtbalas2 = String(configPlayer2.numberBeam);
-    this.txt1 = this.add.text(10, 0, txtbalas2 , {font:"25px Arial", fill:"yellow"});
-    this.txt2 = this.add.text(230, 0, txtbalas1, {font:"25px Arial", fill:"yellow"});
   }//create
 
 
@@ -115,20 +110,9 @@ class Level1 extends Phaser.Scene {
     this.player2.update();
 
     //update all the beams
-    /*
-    for (var i=0; this.scene.projectiles.getChildren.length; i++) {
-      var beam = this.projectiles.getChildren[i];
-      beam.update();
-    }*/
-
     var beams = this.projectiles.getChildren();   //return array
     beams.forEach((beam) => {       
       beam.update();
     });
-    
-    var txtbalas1 = String(this.player.numberBeam);
-    var txtbalas2 = String(this.player2.numberBeam);
-    this.txt1.setText(txtbalas1);
-    this.txt2.setText(txtbalas2);    
   }  
 }
