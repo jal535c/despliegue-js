@@ -113,7 +113,7 @@ class Level1 extends Phaser.Scene {
     enemy.resetShipPos();
     player.x = config.width / 2;
     player.y = config.height - 60;
-
+    
     player.lives--;
   }
 
@@ -124,8 +124,6 @@ class Level1 extends Phaser.Scene {
    * @param - powerUp
    */
   pickPowerUp(player, powerUp) {
-    //console.log(powerUp.extraLife);
-
     if (powerUp.extraLife) player.lives++;
     if (powerUp.extraBeam) {
       player.beamMax += 10;
@@ -148,6 +146,10 @@ class Level1 extends Phaser.Scene {
 
     this.player.update();
     this.player2.update();
+    
+    if (this.player.lives==0 && this.player2.lives==0) {
+      this.scene.start("GameOver");
+    }
 
     //update all the beams
     var beams = this.projectiles.getChildren();   //return array

@@ -33,9 +33,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.beamMax = configPlayer.beamMax;
     this.lives = 3;
 
-    //paint the beams numbers
+    //paint the beams numbers and the lives
     let posX = (configPlayer.playerNumber == 1) ? 10 : 220;
     this.beamTxt = this.scene.add.text(posX, 0, this.beamMax, {font:"25px Arial", fill:"yellow"}).setDepth(2);
+    this.livesTxt = this.scene.add.text(posX, 20, this.lives, {font:"25px Arial", fill:"yellow"}).setDepth(2);
   }
 
 
@@ -45,16 +46,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   update() {   
     this.movePlayerManager();
 
-    if (Phaser.Input.Keyboard.JustDown(this.shootKey) && this.beamMax>0) {      
+    if (Phaser.Input.Keyboard.JustDown(this.shootKey) && this.beamMax>0) {            
       this.beamMax--;
       this.beamTxt.text = this.beamMax;      
-      
+    
       var beam = new Beam({
         scene: this.scene,
         posX: this.x,
         posY: this.y - 16,      //beam start in front of the head
         texture: "beam"
-      });      
+      });                  
+    }
+
+    this.livesTxt.text = this.lives;
+
+    if (this.lives == 0) {
+      this.disableBody(true, true);
     }
   }
 

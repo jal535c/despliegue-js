@@ -2,7 +2,7 @@ var config = {
   width: 256,       
   height: 272,
   backgroundColor: 0x000000,    
-  scene: [BootScene, Level1],
+  scene: [BootScene, Level1, GameOver],
   pixelArt: true,     
   physics: {          // Select physics engine 
     default: "arcade",    

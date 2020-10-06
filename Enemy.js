@@ -8,7 +8,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this);    //add the enemy to the current scene 
     this.scene.physics.world.enableBody(this);    //enable physics
 
-    this.play(configEnemy.anim);      //play the animation for the enemy
+    this.play(configEnemy.anim);      //play the animation
+
+    this.scene.enemies.add(this);     //add the enemy to the enemies group
 
     //Make clickable the sprite (the enemy ship)
     this.setInteractive();
