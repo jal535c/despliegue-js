@@ -9,7 +9,7 @@ class GameOver extends Phaser.Scene {
     console.log("loading Scene Game over");
 
     this.gameOverTxt.setInteractive().on("pointerdown", ()=>{
-      this.scene.start("Level1");
+      this.scene.start("MenuScene");
     });
   }
 }

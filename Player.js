@@ -1,7 +1,7 @@
 class Player extends Phaser.Physics.Arcade.Sprite {   
   /**
    * Player manager
-   * @param - configPlayer 
+   * @param {*} configPlayer
    */
   constructor(configPlayer) {   
     super(configPlayer.scene, configPlayer.posX, configPlayer.posY, configPlayer.texture);
@@ -105,8 +105,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   /**
    * Collision between player and enemy.
    * Reduce lives counter.
-   * @param - player 
-   * @param - enemy 
+   * @param {*} player 
+   * @param {*} enemy 
    */
   hurtPlayer(player, enemy) {
     enemy.resetShipPos();
@@ -117,15 +117,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   /**
    * Collision between player and powerUp.
    * Pick up the powerUp
-   * @param - player 
-   * @param - powerUp
+   * @param {*} player 
+   * @param {*} powerUp
    */
   pickPowerUp(player, powerUp) {
     if (powerUp.extraLife) {
       player.lives++;
-      player.livesTxt.text = player.lives;
+      player.livesTxt.text = player.lives;    //update lives text
     }
-    
+
     if (powerUp.extraBeam) {
       player.beamMax += 10;
       player.beamTxt.text = player.beamMax;   //update beam text

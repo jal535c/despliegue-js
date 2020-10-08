@@ -4,6 +4,15 @@ class Level1 extends Phaser.Scene {
   }
 
 
+  /**
+   * Initialice variables
+   * @param {*} data - Number of Players (1 or 2) send by the MenuScene
+   */
+  init(data) {
+    this.numPlayers = data.numPlayers;
+  }
+
+
   create() {
     //TileSprite background
     this.bgScene2 = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0,0);
@@ -89,7 +98,10 @@ class Level1 extends Phaser.Scene {
       beamMax: 20,
       playerNumber: 1
     }
-    this.player2 = new Player(configPlayer2);
+
+    if (this.numPlayers == 2) {
+      this.player2 = new Player(configPlayer2);
+    }
 
     // A group for all the projectiles
     this.projectiles = this.add.group();

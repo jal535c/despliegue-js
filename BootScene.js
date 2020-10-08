@@ -86,6 +86,6 @@ class BootScene extends Phaser.Scene {
       repeat: -1
     });
 
-    this.scene.start("Level1");   //start another scene
+    this.scene.start("MenuScene");   //start another scene
   }
 }
