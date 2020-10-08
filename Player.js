@@ -8,6 +8,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     
     this.scene = configPlayer.scene;
 
+    this.posX = configPlayer.posX;  //respawn in his own position
+    this.posY = configPlayer.posY;
+
     //Add the player to the current scene, and enables physics
     this.scene.add.existing(this);
     this.scene.physics.world.enableBody(this);
@@ -37,6 +40,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     let posX = (configPlayer.playerNumber == 1) ? 10 : 220;
     this.beamTxt = this.scene.add.text(posX, 0, this.beamMax, {font:"25px Arial", fill:"yellow"}).setDepth(2);
     this.livesTxt = this.scene.add.text(posX, 20, this.lives, {font:"25px Arial", fill:"yellow"}).setDepth(2);
+
+    //Add the player to the players group
+    this.scene.players.add(this);
   }
 
 
@@ -57,11 +63,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         texture: "beam"
       });                  
     }
-
-    this.livesTxt.text = this.lives;
-
-    if (this.lives == 0) {
-      this.disableBody(true, true);
+    
+    if (this.lives === 0) {
+      this.disableBody(true, true);   //only hide, not destroy
     }
   }
 
@@ -83,5 +87,50 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     } else if (this.playerKeys.down.isDown) {
       this.body.setVelocityY(gameSettings.playerSpeed);
     }
+  }
+
+
+  /**
+   * Reset player position and decrement lives
+   */
+  die() {
+    this.x = this.posX;
+    this.y = this.posY;
+    
+    this.lives--;
+    this.livesTxt.text = this.lives;    //update text for lives
+  }
+
+
+  /**
+   * Collision between player and enemy.
+   * Reduce lives counter.
+   * @param - player 
+   * @param - enemy 
+   */
+  hurtPlayer(player, enemy) {
+    enemy.resetShipPos();
+    player.die();
+  }
+
+
+  /**
+   * Collision between player and powerUp.
+   * Pick up the powerUp
+   * @param - player 
+   * @param - powerUp
+   */
+  pickPowerUp(player, powerUp) {
+    if (powerUp.extraLife) {
+      player.lives++;
+      player.livesTxt.text = player.lives;
+    }
+    
+    if (powerUp.extraBeam) {
+      player.beamMax += 10;
+      player.beamTxt.text = player.beamMax;   //update beam text
+    }
+    
+    powerUp.destroy();
   }
 }

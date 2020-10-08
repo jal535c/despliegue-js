@@ -5,7 +5,11 @@ class GameOver extends Phaser.Scene {
 
 
   create() {  
-    this.add.text(20, 20, 'GAME OVER...', {font:"25px Arial", fill:"yellow"});
-    console.log("loading Scene Game over");    
+    this.gameOverTxt = this.add.text(40, config.height/2 - 20, 'GAME OVER', {font:"25px Arial", fill:"red"});
+    console.log("loading Scene Game over");
+
+    this.gameOverTxt.setInteractive().on("pointerdown", ()=>{
+      this.scene.start("Level1");
+    });
   }
 }

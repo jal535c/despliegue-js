@@ -11,6 +11,8 @@ class Level1 extends Phaser.Scene {
     //create physics group for collisions enemies
     this.enemies = this.physics.add.group();
 
+    this.players = this.add.group();    //if the group is physics, don't collide with world bounds
+
     //Create the enemies
     var configEnemy1 = {
       scene: this,
@@ -93,45 +95,9 @@ class Level1 extends Phaser.Scene {
     this.projectiles = this.add.group();
 
     //Collisions
-    //this.physics.add.collider(this.player, this.powerUps);
-    //this.physics.add.collider(this.powerUps, this.powerUps);
-
-    this.physics.add.overlap(this.player, this.powerUps, this.pickPowerUp, null, this);
-    this.physics.add.overlap(this.player2, this.powerUps, this.pickPowerUp, null, this);
-    
-    this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this);
-    this.physics.add.overlap(this.player2, this.enemies, this.hurtPlayer, null, this);
+    this.physics.add.overlap(this.players, this.powerUps, this.player.pickPowerUp, null, this);
+    this.physics.add.overlap(this.players, this.enemies, this.player.hurtPlayer, null, this);    
   }//create
-
-
-  /**
-   * Collision between player and enemy
-   * @param - player 
-   * @param - enemy 
-   */
-  hurtPlayer(player, enemy) {
-    enemy.resetShipPos();
-    player.x = config.width / 2;
-    player.y = config.height - 60;
-    
-    player.lives--;
-  }
-
-
-  /**
-   * Collision between player and powerUp
-   * @param - player 
-   * @param - powerUp
-   */
-  pickPowerUp(player, powerUp) {
-    if (powerUp.extraLife) player.lives++;
-    if (powerUp.extraBeam) {
-      player.beamMax += 10;
-      player.beamTxt.text = player.beamMax;   //update beam text
-    }
-    
-    powerUp.destroy();
-  }
 
 
   /**
@@ -144,10 +110,14 @@ class Level1 extends Phaser.Scene {
     
     this.bgScene2.tilePositionY -= 0.5;   //scroll effect
 
-    this.player.update();
-    this.player2.update();
+    let allLives=0;
+    var allPlayers = this.players.getChildren();
+    allPlayers.forEach((player)=>{
+      player.update();              //update all players
+      allLives += player.lives;   //count all lives 
+    });
     
-    if (this.player.lives==0 && this.player2.lives==0) {
+    if (allLives==0) {
       this.scene.start("GameOver");
     }
 
