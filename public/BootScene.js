@@ -1,11 +1,24 @@
+/**
+ * Clase que gestiona la escena de precarga de recursos
+ *
+ * @class BootScene
+ * @extends {Phaser.Scene}
+ */
 class BootScene extends Phaser.Scene {   
+  
+  /**
+   * Crea una instancia de BootScene.
+   * @memberof BootScene
+   */
   constructor() {
     super("BootScene");  
-  }
+  }  
   
 
   /**
-   * Load the resources, availables for all scenes
+   * Carga los recursos disponibles para todas las escenas.
+   *
+   * @memberof BootScene
    */
   preload() {
     this.load.image("background", "assets/images/background.png");   
@@ -22,10 +35,12 @@ class BootScene extends Phaser.Scene {
 
     this.load.spritesheet("beam", "assets/spritesheets/beam.png", {frameWidth: 16, frameHeight: 16} );
   }
-
+  
 
   /**
-   * Add elements to scene
+   * Crea animaciones y lanza la siguiente escena.
+   *
+   * @memberof BootScene
    */
   create() {
     this.add.text(20, 20, 'Loading game...');    

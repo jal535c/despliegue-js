@@ -1,4 +1,16 @@
+/**
+ * Clase para los objetos extras con bonificaciones que aparecen en el juego
+ *
+ * @class PowerUp
+ * @extends {Phaser.Physics.Arcade.Sprite}
+ */
 class PowerUp extends Phaser.Physics.Arcade.Sprite {
+  
+  /**
+   * Crea una instancia de PowerUp.
+   * @param {*} configPowerUp
+   * @memberof PowerUp
+   */
   constructor(configPowerUp) {
     super(configPowerUp.scene, 0, 0, configPowerUp.texture);
 

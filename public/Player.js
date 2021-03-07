@@ -1,7 +1,15 @@
+/**
+ * Clase para implentar el personaje, la nave del jugador
+ *
+ * @class Player
+ * @extends {Phaser.Physics.Arcade.Sprite}
+ */
 class Player extends Phaser.Physics.Arcade.Sprite {   
+  
   /**
-   * Player manager
+   * Creates an instance of Player.
    * @param {*} configPlayer
+   * @memberof Player
    */
   constructor(configPlayer) {   
     super(configPlayer.scene, configPlayer.posX, configPlayer.posY, configPlayer.texture);
@@ -48,6 +56,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   /**
    * Update player, called by the Level1 update
+   * 
+   * @memberof Player
    */
   update() {   
     this.movePlayerManager();
@@ -68,10 +78,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.disableBody(true, true);   //only hide, not destroy
     }
   }
-
+  
 
   /**
    * Manager to move player
+   *
+   * @memberof Player
    */
   movePlayerManager() {
     this.body.setVelocity(0);     //stop if don't press key
@@ -89,9 +101,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-
+  
   /**
    * Reset player position and decrement lives
+   *
+   * @memberof Player
    */
   die() {
     this.x = this.posX;
@@ -101,12 +115,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.livesTxt.text = this.lives;    //update text for lives
   }
 
-
+  
   /**
    * Collision between player and enemy.
    * Reduce lives counter.
-   * @param {*} player 
-   * @param {*} enemy 
+   * @param {*} player
+   * @param {*} enemy
+   * @memberof Player
    */
   hurtPlayer(player, enemy) {
     enemy.resetShipPos();
@@ -119,6 +134,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
    * Pick up the powerUp
    * @param {*} player 
    * @param {*} powerUp
+   * @memberof Player
    */
   pickPowerUp(player, powerUp) {
     if (powerUp.extraLife) {

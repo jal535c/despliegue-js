@@ -1,4 +1,16 @@
+/**
+ * Clase para las naves enemigas
+ *
+ * @class Enemy
+ * @extends {Phaser.Physics.Arcade.Sprite}
+ */
 class Enemy extends Phaser.Physics.Arcade.Sprite {
+  
+  /**
+   * Crea una instancia de Enemy.
+   * @param {*} configEnemy
+   * @memberof Enemy
+   */
   constructor(configEnemy) {
     super(configEnemy.scene, configEnemy.posX, configEnemy.posY, configEnemy.texture);
 

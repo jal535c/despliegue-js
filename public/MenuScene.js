@@ -1,9 +1,24 @@
+/**
+ * Clase para la escena de menu
+ *
+ * @class MenuScene
+ * @extends {Phaser.Scene}
+ */
 class MenuScene extends Phaser.Scene {  
+  
+  /**
+   * Crea una instancia de MenuScene.
+   * @memberof MenuScene
+   */
   constructor() {
     super("MenuScene");   
   }
 
-
+  /**
+   * Crea textos para la escena menu, y los hace interactivos.
+   *
+   * @memberof MenuScene
+   */
   create() {  
     this.add.text(20, config.height/2 - 60, 'SPACE SHOOTER', {font:"25px Arial", fill:"yellow"});
     

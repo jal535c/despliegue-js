@@ -1,4 +1,15 @@
+/**
+ * Class for the level 1 scene.
+ *
+ * @class Level1
+ * @extends {Phaser.Scene}
+ */
 class Level1 extends Phaser.Scene {
+  
+  /**
+   * Creates an instance of Level1.
+   * @memberof Level1
+   */
   constructor() {
     super("Level1");
   }
@@ -7,22 +18,29 @@ class Level1 extends Phaser.Scene {
   /**
    * Initialice variables
    * @param {*} data - Number of Players (1 or 2) send by the MenuScene
+   * @memberof Level1
    */
   init(data) {
     this.numPlayers = data.numPlayers;
   }
 
 
+  /**
+   * Creates the scene elements
+   *
+   * @memberof Level1
+   */
   create() {
-    //TileSprite background
+    /** TileSprite background */
     this.bgScene2 = this.add.tileSprite(0, 0, config.width, config.height, "background").setOrigin(0,0);
         
-    //create physics group for collisions enemies
+    /** create physics group for collisions enemies */
     this.enemies = this.physics.add.group();
 
+    /** create the players */
     this.players = this.add.group();    //if the group is physics, don't collide with world bounds
 
-    //Create the enemies
+    /** Create the enemies */
     var configEnemy1 = {
       scene: this,
       posX: config.width/2 - 50,
@@ -57,10 +75,10 @@ class Level1 extends Phaser.Scene {
     this.add.text(20, 50, 'THE Game!!!', {font: "25px Arial", fill: "yellow"});
     console.log("cargando Scene 2");
 
-    //Create group or collection for powerup object
+    /** Create group or collection for powerup object */
     this.powerUps = this.physics.add.group();
 
-    //Create 4 objects and add to the group
+    /** @type maxObjects - Create 4 objects and add to the group */
     var maxObjects = 4;
     for (var i=0; i<maxObjects; i++) {
       var anim = (i%2 == 0) ? "red" : "gray";
@@ -72,7 +90,7 @@ class Level1 extends Phaser.Scene {
       });      
     }
 
-    //Player create
+    /** Create Player1 */
     var configPlayer = {
       scene: this,
       posX: config.width/2,
@@ -86,7 +104,7 @@ class Level1 extends Phaser.Scene {
     }
     this.player = new Player(configPlayer);
 
-    //Player2 create
+    /** Create Player2 */
     var configPlayer2 = {
       scene: this,
       posX: config.width/2 - 50,
@@ -103,17 +121,19 @@ class Level1 extends Phaser.Scene {
       this.player2 = new Player(configPlayer2);
     }
 
-    // A group for all the projectiles
+    /** A group for all the projectiles */
     this.projectiles = this.add.group();
-
-    //Collisions
+   
+    /** Collisions */
     this.physics.add.overlap(this.players, this.powerUps, this.player.pickPowerUp, null, this);
     this.physics.add.overlap(this.players, this.enemies, this.player.hurtPlayer, null, this);    
   }//create
-
+  
 
   /**
    * Update 60 times per secons
+   *
+   * @memberof Level1
    */
   update() {    
     this.ship1.update();
@@ -133,7 +153,7 @@ class Level1 extends Phaser.Scene {
       this.scene.start("GameOver");
     }
 
-    //update all the beams
+    /** @type beams - All the beams */
     var beams = this.projectiles.getChildren();   //return array
     beams.forEach((beam) => {       
       beam.update();
