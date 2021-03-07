@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Player.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Player.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Clase para implentar el personaje, la nave del jugador
+ *
+ * @class Player
+ * @extends {Phaser.Physics.Arcade.Sprite}
+ */
+class Player extends Phaser.Physics.Arcade.Sprite {   
+  
+  /**
+   * Creates an instance of Player.
+   * @param {*} configPlayer
+   * @memberof Player
+   */
+  constructor(configPlayer) {   
+    super(configPlayer.scene, configPlayer.posX, configPlayer.posY, configPlayer.texture);
+    
+    this.scene = configPlayer.scene;
+
+    this.posX = configPlayer.posX;  //respawn in his own position
+    this.posY = configPlayer.posY;
+
+    //Add the player to the current scene, and enables physics
+    this.scene.add.existing(this);
+    this.scene.physics.world.enableBody(this);
+    
+    this.setCollideWorldBounds(true);     //Set limits of the world
+    this.play("player_fly");  
+
+    this.setTint(configPlayer.color);   //paint semi-transparent color on top of sprite
+    
+    if (configPlayer.cursors) {
+      this.playerKeys = configPlayer.scene.input.keyboard.createCursorKeys();
+    } else {
+      this.playerKeys = configPlayer.scene.input.keyboard.addKeys({   
+        up: Phaser.Input.Keyboard.KeyCodes.W,       
+        left: Phaser.Input.Keyboard.KeyCodes.A,
+        down: Phaser.Input.Keyboard.KeyCodes.S,
+        right: Phaser.Input.Keyboard.KeyCodes.D
+      });
+    }
+    
+    this.shootKey = this.scene.input.keyboard.addKey(configPlayer.shootKey);  
+    
+    this.beamMax = configPlayer.beamMax;
+    this.lives = 3;
+
+    //paint the beams numbers and the lives
+    let posX = (configPlayer.playerNumber == 1) ? 10 : 220;
+    this.beamTxt = this.scene.add.text(posX, 0, this.beamMax, {font:"25px Arial", fill:"yellow"}).setDepth(2);
+    this.livesTxt = this.scene.add.text(posX, 20, this.lives, {font:"25px Arial", fill:"yellow"}).setDepth(2);
+
+    //Add the player to the players group
+    this.scene.players.add(this);
+  }
+
+
+  /**
+   * Update player, called by the Level1 update
+   * 
+   * @memberof Player
+   */
+  update() {   
+    this.movePlayerManager();
+
+    if (Phaser.Input.Keyboard.JustDown(this.shootKey) &amp;&amp; this.beamMax>0) {            
+      this.beamMax--;
+      this.beamTxt.text = this.beamMax;      
+    
+      var beam = new Beam({
+        scene: this.scene,
+        posX: this.x,
+        posY: this.y - 16,      //beam start in front of the head
+        texture: "beam"
+      });                  
+    }
+    
+    if (this.lives === 0) {
+      this.disableBody(true, true);   //only hide, not destroy
+    }
+  }
+  
+
+  /**
+   * Manager to move player
+   *
+   * @memberof Player
+   */
+  movePlayerManager() {
+    this.body.setVelocity(0);     //stop if don't press key
+    
+    if (this.playerKeys.left.isDown) {
+      this.body.setVelocityX(-gameSettings.playerSpeed);
+    } else if (this.playerKeys.right.isDown) {
+      this.body.setVelocityX(gameSettings.playerSpeed);
+    } 
+    
+    if (this.playerKeys.up.isDown) {      
+      this.body.setVelocityY(-gameSettings.playerSpeed);
+    } else if (this.playerKeys.down.isDown) {
+      this.body.setVelocityY(gameSettings.playerSpeed);
+    }
+  }
+
+  
+  /**
+   * Reset player position and decrement lives
+   *
+   * @memberof Player
+   */
+  die() {
+    this.x = this.posX;
+    this.y = this.posY;
+    
+    this.lives--;
+    this.livesTxt.text = this.lives;    //update text for lives
+  }
+
+  
+  /**
+   * Collision between player and enemy.
+   * Reduce lives counter.
+   * @param {*} player
+   * @param {*} enemy
+   * @memberof Player
+   */
+  hurtPlayer(player, enemy) {
+    enemy.resetShipPos();
+    player.die();
+  }
+
+
+  /**
+   * Collision between player and powerUp.
+   * Pick up the powerUp
+   * @param {*} player 
+   * @param {*} powerUp
+   * @memberof Player
+   */
+  pickPowerUp(player, powerUp) {
+    if (powerUp.extraLife) {
+      player.lives++;
+      player.livesTxt.text = player.lives;    //update lives text
+    }
+
+    if (powerUp.extraBeam) {
+      player.beamMax += 10;
+      player.beamTxt.text = player.beamMax;   //update beam text
+    }
+    
+    powerUp.destroy();
+  }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Beam.html">Beam</a></li><li><a href="Beam.Beam.html">Beam</a></li><li><a href="BootScene.html">BootScene</a></li><li><a href="BootScene.BootScene.html">BootScene</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Enemy.Enemy.html">Enemy</a></li><li><a href="GameOver.html">GameOver</a></li><li><a href="GameOver.GameOver.html">GameOver</a></li><li><a href="Level1.html">Level1</a></li><li><a href="Level1.Level1.html">Level1</a></li><li><a href="MenuScene.html">MenuScene</a></li><li><a href="MenuScene.MenuScene.html">MenuScene</a></li><li><a href="Player.html">Player</a></li><li><a href="Player.Player.html">Player</a></li><li><a href="PowerUp.html">PowerUp</a></li><li><a href="PowerUp.PowerUp.html">PowerUp</a></li></ul><h3>Global</h3><ul><li><a href="global.html#config">config</a></li><li><a href="global.html#game">game</a></li><li><a href="global.html#gameSettings">gameSettings</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun Mar 07 2021 15:54:21 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
